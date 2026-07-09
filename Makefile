@@ -105,9 +105,8 @@ verify: $(IMG_PATH)
 		exit 1; \
 	fi
 
-# VirtualBox test
-vbox: $(IMG_PATH)
-	./ringboot.sh
+# Boot test via imported mmuko-boot direct image
+vbox: boot-run-direct
 
 # Help
 help:
@@ -123,6 +122,6 @@ help:
 	@echo "  boot-direct - Build imported direct BIOS boot image"
 	@echo "  boot-run-direct - Build and run direct image in QEMU"
 	@echo "  verify  - Verify boot image integrity"
-	@echo "  vbox    - Test in VirtualBox"
+	@echo "  vbox    - Build and run imported mmuko-boot direct image"
 	@echo "  clean   - Remove build artifacts"
 	@echo "  help    - Show this help"
