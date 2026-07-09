@@ -28,6 +28,11 @@ mmuko-os/
 │   ├── mmuko_boot.c          # Main boot sequence
 │   ├── interdependency.c     # Tree resolution system
 │   └── obiboot.c/h           # Legacy boot support
+├── boot/
+│   ├── kernel.c              # QEMU freestanding MMUKO boot kernel
+│   ├── mmuko_boot.psc        # PSC source model for MMUKO boot phases
+│   ├── build-direct.ps1      # Windows-friendly direct boot image build
+│   └── Makefile              # Imported boot build targets
 ├── cpp/
 │   ├── riftbridge.hpp        # C++ interface
 │   └── riftbridge.cpp        # C++ implementation
@@ -107,6 +112,9 @@ chmod +x build.sh ringboot.sh
 
 # Build boot image
 ./build.sh
+
+# Build the imported MMUKO boot kernel/direct image
+make boot-direct
 ```
 
 Expected output:
@@ -147,6 +155,31 @@ g++ -std=c++17 -o riftbridge riftbridge.cpp
 cd csharp
 dotnet build RiftBridge.cs
 dotnet run -- --create-image ../img/mmuko-os-cs.img
+```
+
+### Imported QEMU Boot Build
+
+The imported `boot/` implementation turns `boot/mmuko_boot.psc` into a
+freestanding `boot/kernel.c` runtime. Its public phase order is:
+
+```
+SPARSE -> REMEMBER -> ACTIVE -> VERIFY
+```
+
+On Windows, `make` inside `boot/` defaults to the direct BIOS image path so it
+does not require GRUB tools:
+
+```powershell
+cd boot
+make
+qemu-system-i386 -drive format=raw,file=build\mmuko-direct.img,if=ide,index=0 -display none -serial stdio -no-reboot
+```
+
+From the repository root, the same build is available as:
+
+```bash
+make boot-direct
+make boot-run-direct
 ```
 
 ## Testing in VirtualBox

@@ -18,6 +18,7 @@ CPP_DIR = cpp
 CSHARP_DIR = csharp
 BUILD_DIR = build
 IMG_DIR = img
+BOOT_DIR = boot
 
 # Targets
 IMG_NAME = mmuko-os.img
@@ -31,7 +32,7 @@ CPP_SRCS = $(CPP_DIR)/riftbridge.cpp
 C_OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(C_SRCS))
 
 # Default target
-.PHONY: all clean test img cpp csharp
+.PHONY: all clean test img cpp csharp boot boot-direct boot-run-direct boot-clean verify
 
 all: img test
 
@@ -72,6 +73,19 @@ csharp:
 		echo "⚠ dotnet not found, skipping C# build"; \
 	fi
 
+# Build imported MMUKO boot implementation
+boot:
+	$(MAKE) -C $(BOOT_DIR)
+
+boot-direct:
+	$(MAKE) -C $(BOOT_DIR) direct
+
+boot-run-direct:
+	$(MAKE) -C $(BOOT_DIR) run-direct
+
+boot-clean:
+	$(MAKE) -C $(BOOT_DIR) clean
+
 # Clean build artifacts
 clean:
 	rm -rf $(BUILD_DIR) $(IMG_DIR)
@@ -83,6 +97,13 @@ verify: $(IMG_PATH)
 	@echo "Size: $$(stat -f%z '$(IMG_PATH)' 2>/dev/null || stat -c%s '$(IMG_PATH)' 2>/dev/null) bytes"
 	@echo "RIFT Magic: $$(xxd -p -s 0 -l 4 '$(IMG_PATH)')"
 	@echo "Boot Sig: $$(xxd -p -s 510 -l 2 '$(IMG_PATH)')"
+	@if [ -f '$(BOOT_DIR)/kernel.c' ] && [ -f '$(BOOT_DIR)/mmuko_boot.psc' ]; then \
+		echo "Boot integration: $(BOOT_DIR)/kernel.c implements $(BOOT_DIR)/mmuko_boot.psc"; \
+		echo "Boot phases: SPARSE -> REMEMBER -> ACTIVE -> VERIFY"; \
+	else \
+		echo "Boot integration: missing $(BOOT_DIR)/kernel.c or $(BOOT_DIR)/mmuko_boot.psc"; \
+		exit 1; \
+	fi
 
 # VirtualBox test
 vbox: $(IMG_PATH)
@@ -98,6 +119,9 @@ help:
 	@echo "  test    - Run NSIGII verification test"
 	@echo "  cpp     - Build C++ RiftBridge"
 	@echo "  csharp  - Build C# implementation"
+	@echo "  boot    - Build imported boot implementation default"
+	@echo "  boot-direct - Build imported direct BIOS boot image"
+	@echo "  boot-run-direct - Build and run direct image in QEMU"
 	@echo "  verify  - Verify boot image integrity"
 	@echo "  vbox    - Test in VirtualBox"
 	@echo "  clean   - Remove build artifacts"
