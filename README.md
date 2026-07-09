@@ -231,6 +231,10 @@ NSIGII_VERIFIED
 BOOT_SUCCESS
 ```
 
+### `make vbox` Boot Image
+
+![MMUKO-OS make vbox ringboot output](docs/make-vbox-ringboot.png)
+
 Then halt with code `0x55` (NSIGII_YES).
 
 ## Technical Details
