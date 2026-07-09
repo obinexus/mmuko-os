@@ -37,14 +37,15 @@ Build the raw boot image:
 .\build-direct.ps1
 ```
 
-Or, on Windows:
+Or use the default Make target:
 
-```powershell
+```sh
 make
 ```
 
-The default `make` target selects this direct path on Windows so a missing GRUB
-toolchain does not block the local QEMU boot loop.
+The default `make` target selects this direct path so a missing GRUB toolchain
+does not block the local QEMU boot loop. Use `make iso` explicitly when the
+i686 cross-compiler and GRUB tools are available.
 
 Run it:
 

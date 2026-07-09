@@ -9,11 +9,7 @@ KERNEL := $(BUILD)/mmuko-kernel.bin
 ISO := $(BUILD)/mmuko.iso
 DIRECT_IMAGE := $(BUILD)/mmuko-direct.img
 
-ifeq ($(OS),Windows_NT)
-DEFAULT_TARGET := direct
-else
-DEFAULT_TARGET := iso
-endif
+DEFAULT_TARGET ?= direct
 
 CFLAGS := -std=gnu11 -ffreestanding -O2 -Wall -Wextra -fno-pic -fno-pie -fno-stack-protector -m32
 LDFLAGS := -T linker.ld -ffreestanding -O2 -nostdlib -m32
