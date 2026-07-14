@@ -56,7 +56,7 @@ LTF_CODEC_EXE = $(BUILD_DIR)/nsigii-codec$(EXE_EXT)
 
 .DEFAULT_GOAL := help
 
-.PHONY: boot boot-direct boot-run-direct verify vbox clean help img all test cpp csharp boot-clean elfbuild elfinstall obielf-formats obielf-package-img elfboot elfpreview examples examples-trident examples-lt-fileformat
+.PHONY: boot boot-direct boot-run-direct ringboot verify vbox clean help img all test cpp csharp boot-clean elfbuild elfinstall obielf-formats obielf-package-img elfboot elfpreview examples examples-trident examples-lt-fileformat
 
 all test cpp csharp boot-clean:
 	@echo "Target '$@' is not supported. Run 'make help' for supported MMUKO-OS commands."
@@ -76,6 +76,10 @@ boot-direct:
 
 boot-run-direct:
 	$(MAKE) -C $(BOOT_DIR) run-direct OBIELF=$(OBIELF)
+
+# Ring boot: the nonpolar, nonlinear mmuko-boot sequence
+# (SPARSE -> REMEMBER -> ACTIVE -> VERIFY) built and run via QEMU.
+ringboot: boot-run-direct
 
 # Build and package the MMUKO Cargo view of OBIELF artifacts.
 elfbuild:
@@ -146,6 +150,8 @@ help:
 	@echo "  boot    - Build imported boot implementation default"
 	@echo "  boot-direct - Build imported direct BIOS boot image"
 	@echo "  boot-run-direct - Build and run direct image in QEMU"
+	@echo "  ringboot - Run the nonpolar, nonlinear mmuko-boot sequence"
+	@echo "             (SPARSE -> REMEMBER -> ACTIVE -> VERIFY) via QEMU"
 	@echo "  verify  - Verify boot image integrity"
 	@echo "  verify OBIELF=1 - Verify and package the boot image through OBIELF"
 	@echo "  elfbuild - Build this Cargo package with dependency obielf"
