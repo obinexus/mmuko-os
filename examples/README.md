@@ -71,7 +71,7 @@ cargo add obielf
 ```
 
 ```bash
-make obielf-preview
+make elfpreview
 ```
 
 That packages the MMUKO boot image as an `obielf64` executable artifact. Future

@@ -23,7 +23,7 @@ GO ?= go
 
 VERIFY_OBIELF =
 ifeq ($(OBIELF),1)
-VERIFY_OBIELF = obielf-preview
+VERIFY_OBIELF = elfpreview
 endif
 
 ifeq ($(OS),Windows_NT)
@@ -56,7 +56,7 @@ LTF_CODEC_EXE = $(BUILD_DIR)/nsigii-codec$(EXE_EXT)
 
 .DEFAULT_GOAL := help
 
-.PHONY: boot boot-direct boot-run-direct verify vbox clean help img all test cpp csharp boot-clean obielf-build obielf-install obielf-formats obielf-package-img obielf-package-boot obielf-preview examples examples-trident examples-lt-fileformat
+.PHONY: boot boot-direct boot-run-direct verify vbox clean help img all test cpp csharp boot-clean elfbuild elfinstall obielf-formats obielf-package-img obielf-package-boot elfpreview examples examples-trident examples-lt-fileformat
 
 all test cpp csharp boot-clean:
 	@echo "Target '$@' is not supported. Run 'make help' for supported MMUKO-OS commands."
@@ -78,10 +78,10 @@ boot-run-direct:
 	$(MAKE) -C $(BOOT_DIR) run-direct OBIELF=$(OBIELF)
 
 # Build and package the MMUKO Cargo view of OBIELF artifacts.
-obielf-build:
+elfbuild:
 	cargo build
 
-obielf-install:
+elfinstall:
 	cargo install obielf
 
 obielf-formats:
@@ -93,7 +93,7 @@ obielf-package-img: img
 obielf-package-boot: boot-direct
 	$(OBIELF_RUN) package --format $(OBIELF_FORMAT) --kind executable --name mmuko-boot --profile $(OBIELF_PROFILE) --target-dir "$(OBIELF_TARGET_DIR)" "$(BOOT_DIRECT_IMAGE)"
 
-obielf-preview: obielf-formats obielf-package-img
+elfpreview: obielf-formats obielf-package-img
 	@echo "OBIELF preview packaged MMUKO-OS as $(OBIELF_FORMAT) executable metadata."
 
 # Build or locate examples that demonstrate the boot and LTF surfaces.
@@ -147,10 +147,10 @@ help:
 	@echo "  boot-direct - Build imported direct BIOS boot image"
 	@echo "  boot-run-direct - Build and run direct image in QEMU"
 	@echo "  verify  - Verify boot image integrity"
-	@echo "  verify OBIELF=1 - Verify and package the boot image through local OBIELF"
-	@echo "  obielf-build - Build this Cargo package with dependency obielf"
-	@echo "  obielf-install - cargo install obielf"
-	@echo "  obielf-preview - Show OBIELF formats and package img/mmuko-os.img"
+	@echo "  verify OBIELF=1 - Verify and package the boot image through OBIELF"
+	@echo "  elfbuild - Build this Cargo package with dependency obielf"
+	@echo "  elfinstall - cargo install obielf"
+	@echo "  elfpreview - Show OBIELF formats and package img/mmuko-os.img"
 	@echo "  obielf-package-boot - Package boot/build/mmuko-direct.img"
 	@echo "  examples - Build/check trident-boot and lt-fileformat examples"
 	@echo "  vbox    - Build and run MMUKO-OS boot image in VirtualBox"

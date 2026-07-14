@@ -218,8 +218,8 @@ obielf = "0.1.0"
 Build the MMUKO-OS Cargo integration or install the public OBIELF CLI:
 
 ```bash
-make obielf-build
-make obielf-install
+make elfbuild
+make elfinstall
 ```
 
 The commands above map to:
@@ -232,7 +232,7 @@ cargo install obielf
 Preview the current MMUKO-OS boot artifact through this Cargo package:
 
 ```bash
-make obielf-preview
+make elfpreview
 ```
 
 That target runs `cargo run -- formats` and packages `img/mmuko-os.img` as an
