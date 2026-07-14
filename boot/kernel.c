@@ -8,6 +8,12 @@
 #define MMUKO_VERSION "0.1-qemu"
 #define MMUKO_MEMORY_SIZE 16
 
+#ifdef OBIELF
+#define MMUKO_OBIELF_BUILD 1
+#else
+#define MMUKO_OBIELF_BUILD 0
+#endif
+
 #define NSIGII_YES 0x55
 #define NSIGII_NO 0xAA
 #define NSIGII_MAYBE 0x00
@@ -790,6 +796,9 @@ void kernel_main(uint32_t multiboot_magic, uint32_t multiboot_info)
 
     puts_kernel("MMUKO OS Boot Loader\n");
     puts_kernel("OBINexus R&D\n");
+    if (MMUKO_OBIELF_BUILD != 0) {
+        puts_kernel("OBIELF mode: executable-first package, linkable-next handoff\n");
+    }
 
     mmuko_system_init(&g_system, g_memory, MMUKO_MEMORY_SIZE);
     BootStatus status = mmuko_boot(&g_system);

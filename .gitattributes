@@ -1,0 +1,3 @@
+*.sh text eol=lf
+Makefile text eol=lf
+boot/Makefile text eol=lf

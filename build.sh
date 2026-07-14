@@ -22,6 +22,11 @@ CFLAGS="-Wall -Wextra -std=c11 -I./include -O2"
 CXXFLAGS="-Wall -Wextra -std=c++17 -I./include -O2"
 ASMFLAGS="-f bin"
 
+if [ "${OBIELF:-0}" = "1" ]; then
+    CFLAGS="${CFLAGS} -DOBIELF"
+    CXXFLAGS="${CXXFLAGS} -DOBIELF"
+fi
+
 # Directories
 IMG_DIR="img"
 BUILD_DIR="build"
@@ -35,6 +40,9 @@ IMG_PATH="${IMG_DIR}/${IMG_NAME}"
 
 echo -e "${BLUE}=== MMUKO-OS Build System ===${NC}"
 echo -e "${BLUE}Interdependency Tree Hierarchy Boot${NC}"
+if [ "${OBIELF:-0}" = "1" ]; then
+    echo -e "${BLUE}OBIELF packaging hooks enabled (-DOBIELF)${NC}"
+fi
 echo ""
 
 # Create directories
@@ -55,6 +63,20 @@ print_error() {
 
 print_warning() {
     echo -e "${YELLOW}⚠${NC} $1"
+}
+
+read_hex() {
+    path="$1"
+    offset="$2"
+    length="$3"
+
+    if command -v xxd > /dev/null 2>&1; then
+        xxd -p -s "${offset}" -l "${length}" "${path}"
+    elif command -v od > /dev/null 2>&1; then
+        od -An -tx1 -j "${offset}" -N "${length}" "${path}" | tr -d ' \n'
+    else
+        echo ""
+    fi
 }
 
 # ============================================================================
@@ -221,7 +243,7 @@ else
 fi
 
 # Check RIFT header magic
-MAGIC=$(xxd -p -s 0 -l 4 "${IMG_PATH}" 2>/dev/null || echo "00000000")
+MAGIC=$(read_hex "${IMG_PATH}" 0 4)
 if [ "$MAGIC" = "4e584f42" ]; then
     print_success "RIFT header magic verified (NXOB)"
 else
@@ -230,7 +252,7 @@ else
 fi
 
 # Check boot signature
-BOOT_SIG=$(xxd -p -s 510 -l 2 "${IMG_PATH}" 2>/dev/null || echo "0000")
+BOOT_SIG=$(read_hex "${IMG_PATH}" 510 2)
 if [ "$BOOT_SIG" = "55aa" ]; then
     print_success "Boot signature (0x55AA) verified"
 else

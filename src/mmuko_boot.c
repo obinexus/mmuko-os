@@ -22,6 +22,11 @@ static RingBootMachine boot_machine;
 static Qubit qubit_array[MUCO_QUBITS];
 static InterdepTree *boot_tree = NULL;
 
+#ifdef OBIELF
+static const char *const obielf_mode =
+    "OBIELF mode: executable-first packaging, linkable-next handoff\r\n";
+#endif
+
 /**
  * Initialize MMUKO boot system
  * Sets up sparse state with half-spin allocation
@@ -48,6 +53,9 @@ void mmuko_boot_init(void) {
     print_boot_message("\r\n");
     print_boot_message("=== MMUKO-OS RINGBOOT ===\r\n");
     print_boot_message("OBINEXUS NSIGII Verification\r\n");
+#ifdef OBIELF
+    print_boot_message(obielf_mode);
+#endif
     print_boot_message("\r\n");
 }
 

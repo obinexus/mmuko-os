@@ -14,6 +14,11 @@ DEFAULT_TARGET ?= direct
 CFLAGS := -std=gnu11 -ffreestanding -O2 -Wall -Wextra -fno-pic -fno-pie -fno-stack-protector -m32
 LDFLAGS := -T linker.ld -ffreestanding -O2 -nostdlib -m32
 LIBS := -lgcc
+OBIELF ?= 0
+
+ifeq ($(OBIELF),1)
+CFLAGS += -DOBIELF
+endif
 
 ifeq ($(OS),Windows_NT)
 CHECK_CMD = where
@@ -44,6 +49,9 @@ help:
 	@echo "  make direct      - Build the Windows-friendly direct boot image"
 	@echo "  make run-direct  - Build and boot the direct image in QEMU"
 	@echo "  make clean       - Remove build artifacts"
+	@echo ""
+	@echo "Feature flags:"
+	@echo "  make direct OBIELF=1 - Compile kernel.c with -DOBIELF"
 	@echo ""
 	@echo "Toolchain notes:"
 	@echo "  GRUB path expects: $(CC), $(AS), grub-file, grub-mkrescue, $(QEMU)"

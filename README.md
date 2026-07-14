@@ -15,6 +15,18 @@ MMUKO-OS (M for Mike, U for Uniform, K for Kilo, O for Oscar) is a multi-languag
 - **RIFT Header**: 8-byte verification header with checksum
 - **Multi-Language Support**: C, C++, C# implementations
 
+In the OBINexus vocabulary, **MMUKO** names the spirits of good and evil that
+bind us all in the digital world. MMUKO-OS treats that language as a
+constitutional human-rights operating-system model: boot is not only loading
+bytes, but proving that identity, memory, device state, and execution permission
+have passed NSIGII verification.
+
+OBIELF is the heart-and-soul executable/linkable artifact layer for this work.
+MMUKO-OS boots with `mmuko-boot` and packages boot artifacts through OBIELF as
+executable-first outputs that can later become linkable objects, static
+libraries, dynamic libraries, or metadata manifests as the OBIELF linker/loader
+specification matures.
+
 ## Project Structure
 
 ```
@@ -38,6 +50,9 @@ mmuko-os/
 │   └── riftbridge.cpp        # C++ implementation
 ├── csharp/
 │   └── RiftBridge.cs         # C# .NET implementation
+├── examples/
+│   ├── trident-boot/         # Static HTML/Canvas NSIGII trident visualizer
+│   └── lt-fileformat/        # Go LTF/NSIGII codec example
 ├── build.sh                  # Main build script
 ├── ringboot.sh               # VirtualBox test script
 └── README.md                 # This file
@@ -101,6 +116,9 @@ SPARSE → REMEMBER → ACTIVE → VERIFY
 - GCC compiler (C11 support)
 - G++ compiler (C++17 support, optional)
 - NASM assembler (optional, for assembly version)
+- Rust and Cargo, for OBIELF packaging (`../../obielf`)
+- Go 1.21+, for the `examples/lt-fileformat` codec
+- QEMU, for the direct `mmuko-boot` image
 - VirtualBox (for testing)
 - Bash shell
 
@@ -180,6 +198,112 @@ From the repository root, the same build is available as:
 ```bash
 make boot-direct
 make boot-run-direct
+```
+
+### OBIELF Integration
+
+The local OBIELF crate is expected beside this repository at:
+
+```text
+C:\Users\OBINexus\Projects\obielf
+```
+
+From this repository, the relative path is `../../obielf`. Build or install the
+tool directly with Cargo:
+
+```bash
+make obielf-build
+make obielf-install
+```
+
+For a Rust crate that wants to use OBIELF as a library during local development:
+
+```bash
+cargo add --path ../../obielf
+```
+
+After OBIELF is published to crates.io, consumers can use:
+
+```bash
+cargo add obielf
+cargo install obielf
+```
+
+Preview the current MMUKO-OS boot artifact through the local OBIELF CLI:
+
+```bash
+make obielf-preview
+```
+
+That target runs `obielf formats` and packages `img/mmuko-os.img` as an
+`obielf64` executable artifact under:
+
+```text
+target/obielf/debug/obielf64/bin/mmuko-os.obielf64
+```
+
+Package the imported `mmuko-boot` direct BIOS image instead:
+
+```bash
+make obielf-package-boot
+```
+
+Use the compile-time C/Rust integration switch when you want the boot logs and
+freestanding kernel build to acknowledge the OBIELF handoff:
+
+```bash
+make verify OBIELF=1
+OBIELF=1 ./build.sh
+make boot-direct OBIELF=1
+```
+
+Current NASM status is intentionally conservative. OBIELF reserves
+`obielf32` and `obielf64`, but stock NASM cannot emit those formats until a
+native OBIELF backend is installed. Today, assemble with a standard ELF target
+and package the result:
+
+```bash
+nasm -f elf64 boot.asm -o build/boot.elf64.o
+obielf package --format obielf64 --kind object --name boot build/boot.elf64.o
+```
+
+For boot images, MMUKO-OS focuses on **executable first**, then linkable:
+
+```bash
+make img
+obielf package --format obielf64 --kind executable --name mmuko-os img/mmuko-os.img
+```
+
+For future linkable artifacts, use `--kind object`, `--kind static-library`, or
+`--kind dynamic-library` once the corresponding linker/loader contracts are
+defined.
+
+## Examples
+
+The examples show the two project-facing protocol surfaces:
+
+- `examples/trident-boot` is a static HTML/Canvas visualizer for the NSIGII
+  trident boot path: identity, device, and time align toward 95.4% coherence.
+- `examples/lt-fileformat` is a Go `.nsigii` codec that demonstrates LTF
+  (Linkable Then Format/File): TRANSMIT -> RECEIVE -> VERIFY before a file is
+  treated as an executable boundary.
+
+Build/check both examples from the repository root:
+
+```bash
+make examples
+```
+
+Open the trident visualizer:
+
+```text
+examples/trident-boot/index.html
+```
+
+Build only the Go LTF codec:
+
+```bash
+make examples-lt-fileformat
 ```
 
 ## Testing in VirtualBox

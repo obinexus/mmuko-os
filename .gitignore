@@ -1,3 +1,5 @@
+build/
+target/
 boot/build/
 boot/mmuko.iso
 boot/mmuko-direct.img
