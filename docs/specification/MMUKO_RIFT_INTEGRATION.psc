@@ -478,11 +478,11 @@ SPECIFICATION MMUKO_RIFT_BOOT_INTEGRATION {
         CONSTANTS:
             BOOT_SECTOR_SIZE = 512
             BOOT_SIGNATURE   = 0xAA55
-            RIFT_MAGIC       = "NXOB"  // OBINEXUS reversed
+            RIFT_MAGIC       = "RIFT"  // RIFT boot header magic
             RIFT_VERSION     = 0x01
             
         STRUCTURE BOOT_SECTOR {
-            BYTES[0-3]:   RIFT_MAGIC ("NXOB")
+            BYTES[0-3]:   RIFT_MAGIC ("RIFT")
             BYTE[4]:      RIFT_VERSION (0x01)
             BYTE[5]:      CHECKSUM (calculated)
             BYTES[6-509]: BOOT_CODE (assembly instructions)
@@ -570,7 +570,7 @@ SPECIFICATION MMUKO_RIFT_BOOT_INTEGRATION {
         
         VERIFICATION_STEPS {
             ASSERT boot_sector_size == 512
-            ASSERT boot_sector[0:3] == "NXOB"
+            ASSERT boot_sector[0:3] == "RIFT"
             ASSERT boot_sector[510:511] == [0x55, 0xAA]
         }
     }
@@ -711,7 +711,7 @@ SPECIFICATION MMUKO_RIFT_BOOT_INTEGRATION {
             
         VERIFICATION:
             CHECK_SIZE:      test $(stat -c%s img/mmuko-os.img) -eq 512
-            CHECK_MAGIC:     test $(head -c 4 img/mmuko-os.img) = "NXOB"
+            CHECK_MAGIC:     test $(head -c 4 img/mmuko-os.img) = "RIFT"
             CHECK_SIGNATURE: test $(tail -c 2 img/mmuko-os.img | od -An -tx1) = "55 aa"
     }
     

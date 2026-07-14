@@ -78,7 +78,7 @@ namespace MMUKO
     public struct RIFTHeader
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public byte[] Magic;        // "NXOB"
+        public byte[] Magic;        // "RIFT"
         public byte Version;        // 0x01
         public byte Reserved;       // 0x00
         public byte Checksum;       // 0xFE
@@ -86,7 +86,7 @@ namespace MMUKO
 
         public RIFTHeader()
         {
-            Magic = new byte[] { (byte)'N', (byte)'X', (byte)'O', (byte)'B' };
+            Magic = new byte[] { (byte)'R', (byte)'I', (byte)'F', (byte)'T' };
             Version = 0x01;
             Reserved = 0x00;
             Checksum = 0xFE;
@@ -96,8 +96,8 @@ namespace MMUKO
         public bool IsValid()
         {
             return Magic != null && Magic.Length == 4 &&
-                   Magic[0] == 'N' && Magic[1] == 'X' &&
-                   Magic[2] == 'O' && Magic[3] == 'B' &&
+                   Magic[0] == 'R' && Magic[1] == 'I' &&
+                   Magic[2] == 'F' && Magic[3] == 'T' &&
                    Version == 0x01 && Checksum == 0xFE;
         }
 
@@ -619,7 +619,7 @@ namespace MMUKO
         }
 
         public static string GetVersion() => "1.0.0-NSIGII";
-        public static string GetSignature() => "NXOB-MMUKO-OS";
+        public static string GetSignature() => "RIFT-MMUKO-OS";
     }
 
     // =========================================================================

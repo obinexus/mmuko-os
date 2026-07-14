@@ -14,7 +14,7 @@ def create_boot_image(output_path="img/mmuko-os.img"):
     sector = bytearray(512)
     
     # RIFT Header (8 bytes)
-    sector[0:4] = b'NXOB'      # Magic
+    sector[0:4] = b'RIFT'      # Magic
     sector[4] = 0x01            # Version
     sector[5] = 0x00            # Reserved
     sector[6] = 0xFE            # Checksum
@@ -81,8 +81,8 @@ def verify_image(path):
     
     # Check RIFT magic
     magic = data[0:4]
-    if magic != b'NXOB':
-        print(f"ERROR: RIFT magic is {magic} (expected NXOB)")
+    if magic != b'RIFT':
+        print(f"ERROR: RIFT magic is {magic} (expected RIFT)")
         return False
     
     # Check boot signature

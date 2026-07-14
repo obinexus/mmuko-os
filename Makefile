@@ -56,7 +56,7 @@ LTF_CODEC_EXE = $(BUILD_DIR)/nsigii-codec$(EXE_EXT)
 
 .DEFAULT_GOAL := help
 
-.PHONY: boot boot-direct boot-run-direct verify vbox clean help img all test cpp csharp boot-clean elfbuild elfinstall obielf-formats obielf-package-img obielf-package-boot elfpreview examples examples-trident examples-lt-fileformat
+.PHONY: boot boot-direct boot-run-direct verify vbox clean help img all test cpp csharp boot-clean elfbuild elfinstall obielf-formats obielf-package-img elfboot elfpreview examples examples-trident examples-lt-fileformat
 
 all test cpp csharp boot-clean:
 	@echo "Target '$@' is not supported. Run 'make help' for supported MMUKO-OS commands."
@@ -90,7 +90,7 @@ obielf-formats:
 obielf-package-img: img
 	$(OBIELF_RUN) package --format $(OBIELF_FORMAT) --kind executable --name mmuko-os --profile $(OBIELF_PROFILE) --target-dir "$(OBIELF_TARGET_DIR)" "$(IMG_PATH)"
 
-obielf-package-boot: boot-direct
+elfboot: boot-direct
 	$(OBIELF_RUN) package --format $(OBIELF_FORMAT) --kind executable --name mmuko-boot --profile $(OBIELF_PROFILE) --target-dir "$(OBIELF_TARGET_DIR)" "$(BOOT_DIRECT_IMAGE)"
 
 elfpreview: obielf-formats obielf-package-img
@@ -151,7 +151,7 @@ help:
 	@echo "  elfbuild - Build this Cargo package with dependency obielf"
 	@echo "  elfinstall - cargo install obielf"
 	@echo "  elfpreview - Show OBIELF formats and package img/mmuko-os.img"
-	@echo "  obielf-package-boot - Package boot/build/mmuko-direct.img"
+	@echo "  elfboot - Package boot/build/mmuko-direct.img"
 	@echo "  examples - Build/check trident-boot and lt-fileformat examples"
 	@echo "  vbox    - Build and run MMUKO-OS boot image in VirtualBox"
 	@echo "  clean   - Remove build artifacts"

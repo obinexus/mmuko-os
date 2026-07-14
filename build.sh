@@ -161,10 +161,10 @@ int main(void) {
     memset(sector, 0, 512);
 
     /* RIFT Header (8 bytes) */
-    sector[0] = 'N';
-    sector[1] = 'X';
-    sector[2] = 'O';
-    sector[3] = 'B';
+    sector[0] = 'R';
+    sector[1] = 'I';
+    sector[2] = 'F';
+    sector[3] = 'T';
     sector[4] = 0x01;   /* Version */
     sector[5] = 0x00;   /* Reserved */
     sector[6] = 0xFE;   /* Checksum */
@@ -244,10 +244,10 @@ fi
 
 # Check RIFT header magic
 MAGIC=$(read_hex "${IMG_PATH}" 0 4)
-if [ "$MAGIC" = "4e584f42" ]; then
-    print_success "RIFT header magic verified (NXOB)"
+if [ "$MAGIC" = "52494654" ]; then
+    print_success "RIFT header magic verified (RIFT)"
 else
-    print_error "RIFT header magic invalid (expected 4e584f42, got $MAGIC)"
+    print_error "RIFT header magic invalid (expected 52494654, got $MAGIC)"
     exit 1
 fi
 
@@ -285,7 +285,7 @@ echo "Bootable image: ${IMG_PATH}"
 echo ""
 echo "Image details:"
 echo "  - Size: 512 bytes (exact boot sector)"
-echo "  - RIFT Header: NXOB v1 (checksum FE)"
+echo "  - RIFT Header: RIFT v1 (checksum FE)"
 echo "  - Boot Signature: 0x55AA"
 echo "  - NSIGII Protocol: Trinary (YES/NO/MAYBE)"
 echo "  - Boot Sequence: SPARSE → REMEMBER → ACTIVE → VERIFY"

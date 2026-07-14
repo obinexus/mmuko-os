@@ -11,7 +11,7 @@ ORG 0x7C00
 ; RIFT HEADER (8 bytes)
 ; ============================================================================
 rift_header:
-    db 'NXOB'           ; Magic: OBINEXUS signature
+    db 'RIFT'           ; Magic: RIFT signature
     db 0x01             ; Version: 1
     db 0x00             ; Reserved
     db 0xFE             ; Checksum: XOR of header = 0xFE

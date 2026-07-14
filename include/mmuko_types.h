@@ -16,10 +16,10 @@
 #define NSIGII_MAYBE    0x00    /* 00000000 - Pending */
 
 /* RIFT Header Magic */
-#define RIFT_MAGIC_0    'N'
-#define RIFT_MAGIC_1    'X'
-#define RIFT_MAGIC_2    'O'
-#define RIFT_MAGIC_3    'B'
+#define RIFT_MAGIC_0    'R'
+#define RIFT_MAGIC_1    'I'
+#define RIFT_MAGIC_2    'F'
+#define RIFT_MAGIC_3    'T'
 #define RIFT_VERSION    0x01
 #define RIFT_CHECKSUM   0xFE
 
@@ -63,7 +63,7 @@ typedef enum {
 
 /* RIFT Header Structure (8 bytes) */
 typedef struct __attribute__((packed)) {
-    uint8_t magic[4];       /* "NXOB" - OBINEXUS */
+    uint8_t magic[4];       /* "RIFT" */
     uint8_t version;        /* 0x01 */
     uint8_t reserved;       /* 0x00 */
     uint8_t checksum;       /* XOR of header bytes = 0xFE */

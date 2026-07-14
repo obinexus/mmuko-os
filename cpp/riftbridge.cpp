@@ -222,10 +222,10 @@ NSIGIIState RingBootMachine::verify(const std::vector<Qubit>& qubits) {
 // ============================================================================
 
 RIFTHeader::RIFTHeader() {
-    magic[0] = 'N';
-    magic[1] = 'X';
-    magic[2] = 'O';
-    magic[3] = 'B';
+    magic[0] = 'R';
+    magic[1] = 'I';
+    magic[2] = 'F';
+    magic[3] = 'T';
     version = 0x01;
     reserved = 0x00;
     checksum = 0xFE;
@@ -233,8 +233,8 @@ RIFTHeader::RIFTHeader() {
 }
 
 bool RIFTHeader::isValid() const {
-    return magic[0] == 'N' && magic[1] == 'X' && 
-           magic[2] == 'O' && magic[3] == 'B' &&
+    return magic[0] == 'R' && magic[1] == 'I' &&
+           magic[2] == 'F' && magic[3] == 'T' &&
            version == 0x01 && checksum == 0xFE;
 }
 
@@ -435,7 +435,7 @@ std::string RiftBridge::getVersion() {
 }
 
 std::string RiftBridge::getSignature() {
-    return "NXOB-MMUKO-OS";
+    return "RIFT-MMUKO-OS";
 }
 
 // ============================================================================

@@ -192,7 +192,7 @@ private:
 // ============================================================================
 
 struct RIFTHeader {
-    uint8_t magic[4];       // "NXOB"
+    uint8_t magic[4];       // "RIFT"
     uint8_t version;        // 0x01
     uint8_t reserved;       // 0x00
     uint8_t checksum;       // 0xFE

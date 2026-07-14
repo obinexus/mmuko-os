@@ -120,7 +120,7 @@ ROADMAP MMUKO_VIRTUALBOX_IMPLEMENTATION {
             	    echo "[✗] Size: $$SIZE bytes (expected 512)"; \
             	    exit 1; \
             	fi
-            	@if head -c 4 $(IMG_DIR)/mmuko-os.img | grep -q "NXOB"; then \
+                @if head -c 4 $(IMG_DIR)/mmuko-os.img | grep -q "RIFT"; then \
             	    echo "[✓] RIFT header verified"; \
             	else \
             	    echo "[⚠] RIFT header not found"; \
@@ -187,7 +187,7 @@ ROADMAP MMUKO_VIRTUALBOX_IMPLEMENTATION {
             ; SECTION 1: RIFT HEADER (6 bytes)
             ; ================================================================
             rift_header:
-                db 'N', 'X', 'O', 'B'   ; Magic number (OBINEXUS reversed)
+                db 'R', 'I', 'F', 'T'   ; RIFT magic number
                 db 0x01                  ; Version 1
                 db 0xFE                  ; Checksum placeholder
             
@@ -527,7 +527,7 @@ ROADMAP MMUKO_VIRTUALBOX_IMPLEMENTATION {
                     - [ ] C++ code compiles without errors
                     - [ ] C# code compiles (if available)
                     - [ ] Boot image is exactly 512 bytes
-                    - [ ] RIFT header present (NXOB magic)
+                    - [ ] RIFT header present (RIFT magic)
                     - [ ] Boot signature present (0x55AA)
                     - [ ] NSIGII test returns 0x55 (YES)
                     
@@ -681,7 +681,7 @@ ROADMAP MMUKO_VIRTUALBOX_IMPLEMENTATION {
             
         PHASE_2_BOOT_SECTOR:
             [✓] 512-byte boot sector created
-            [✓] RIFT header (NXOB magic) present
+            [✓] RIFT header (RIFT magic) present
             [✓] Boot signature (0xAA55) present
             [✓] Pause-yield mechanism implemented (INT 0x16)
             [✓] Four boot phases implemented

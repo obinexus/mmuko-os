@@ -150,7 +150,7 @@ Interdependency Tree Hierarchy Boot
 ✓ Boot sector assembled with NASM
 [5/6] Verifying boot image...
 ✓ Boot image is exactly 512 bytes
-✓ RIFT header magic verified (NXOB)
+✓ RIFT header magic verified (RIFT)
 ✓ Boot signature (0x55AA) verified
 [6/6] Building C++ RiftBridge...
 ✓ C++ RiftBridge compiled
@@ -245,7 +245,7 @@ target/obielf/debug/obielf64/bin/mmuko-os.obielf64
 Package the imported `mmuko-boot` direct BIOS image instead:
 
 ```bash
-make obielf-package-boot
+make elfboot
 ```
 
 Use the compile-time C/Rust integration switch when you want the boot logs and
@@ -367,7 +367,7 @@ Then halt with code `0x55` (NSIGII_YES).
 
 | Offset | Size | Field | Value | Description |
 |--------|------|-------|-------|-------------|
-| 0x00 | 4 | Magic | "NXOB" | OBINEXUS signature |
+| 0x00 | 4 | Magic | "RIFT" | RIFT signature |
 | 0x04 | 1 | Version | 0x01 | Protocol version |
 | 0x05 | 1 | Reserved | 0x00 | Reserved |
 | 0x06 | 1 | Checksum | 0xFE | XOR of header |

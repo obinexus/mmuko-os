@@ -111,7 +111,7 @@ Exit code: 0
 
 - **File**: `img/mmuko-os.img`
 - **Size**: 512 bytes (exact x86 boot sector)
-- **RIFT Header**: NXOB v1 (checksum 0xFE)
+- **RIFT Header**: RIFT v1 (checksum 0xFE)
 - **Boot Signature**: 0x55AA at offset 510
 - **NSIGII Result**: 0x55 (YES) on successful boot
 
@@ -157,7 +157,7 @@ bridge.CreateBootImage("mmuko-os.img");
 
 The boot image has been verified to:
 - ✓ Be exactly 512 bytes
-- ✓ Have valid RIFT header (NXOB magic)
+- ✓ Have valid RIFT header (RIFT magic)
 - ✓ Have valid boot signature (0x55AA)
 - ✓ Pass NSIGII verification (all 8 qubits OK)
 - ✓ Resolve interdependency tree (8 nodes)
