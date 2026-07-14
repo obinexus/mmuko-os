@@ -114,6 +114,19 @@ echo ""
 echo "Monitoring boot sequence..."
 echo ""
 
+# Locate VirtualBox VBoxManage
+if command -v VBoxManage >/dev/null 2>&1; then
+    VBOXMANAGE="VBoxManage"
+elif [ -x "/mnt/c/Program Files/Oracle/VirtualBox/VBoxManage.exe" ]; then
+    VBOXMANAGE="/mnt/c/Program Files/Oracle/VirtualBox/VBoxManage.exe"
+else
+    echo -e "${RED}Error: VirtualBox VBoxManage not found.${NC}"
+    echo "Install VirtualBox on Windows or ensure VBoxManage is available in PATH."
+    exit 1
+fi
+
+echo "Using VirtualBox:"
+"$VBOXMANAGE" --version
 # Wait for VM to boot and halt
 for i in {1..10}; do
     sleep 1
@@ -141,6 +154,7 @@ if [ "$VM_STATE" == "running" ]; then
     echo "Check the VM window to verify boot messages."
     echo ""
 fi
+
 
 echo "Commands:"
 echo "  View serial output: tail -f /tmp/mmuko-os-serial.log"
