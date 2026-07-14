@@ -116,7 +116,7 @@ SPARSE → REMEMBER → ACTIVE → VERIFY
 - GCC compiler (C11 support)
 - G++ compiler (C++17 support, optional)
 - NASM assembler (optional, for assembly version)
-- Rust and Cargo, for OBIELF packaging (`../../obielf`)
+- Rust and Cargo, for OBIELF packaging (`cargo add obielf`)
 - Go 1.21+, for the `examples/lt-fileformat` codec
 - QEMU, for the direct `mmuko-boot` image
 - VirtualBox (for testing)
@@ -202,41 +202,41 @@ make boot-run-direct
 
 ### OBIELF Integration
 
-The local OBIELF crate is expected beside this repository at:
+This repository is a Cargo package and depends on OBIELF directly:
 
-```text
-C:\Users\OBINexus\Projects\obielf
+```bash
+cargo add obielf
 ```
 
-From this repository, the relative path is `../../obielf`. Build or install the
-tool directly with Cargo:
+The dependency is recorded in `Cargo.toml`:
+
+```toml
+[dependencies]
+obielf = "0.1.0"
+```
+
+Build the MMUKO-OS Cargo integration or install the public OBIELF CLI:
 
 ```bash
 make obielf-build
 make obielf-install
 ```
 
-For a Rust crate that wants to use OBIELF as a library during local development:
+The commands above map to:
 
 ```bash
-cargo add --path ../../obielf
-```
-
-After OBIELF is published to crates.io, consumers can use:
-
-```bash
-cargo add obielf
+cargo build
 cargo install obielf
 ```
 
-Preview the current MMUKO-OS boot artifact through the local OBIELF CLI:
+Preview the current MMUKO-OS boot artifact through this Cargo package:
 
 ```bash
 make obielf-preview
 ```
 
-That target runs `obielf formats` and packages `img/mmuko-os.img` as an
-`obielf64` executable artifact under:
+That target runs `cargo run -- formats` and packages `img/mmuko-os.img` as an
+`obielf64` executable artifact through the OBIELF library under:
 
 ```text
 target/obielf/debug/obielf64/bin/mmuko-os.obielf64

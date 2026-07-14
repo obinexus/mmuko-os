@@ -15,13 +15,10 @@ VBOX_VM_NAME ?= MMUKO-OS-RingBoot
 VBOX_MEMORY ?= 64
 VBOX_VRAM ?= 4
 OBIELF ?= 0
-OBIELF_DIR ?= ../../obielf
-OBIELF_MANIFEST ?= $(OBIELF_DIR)/Cargo.toml
 OBIELF_FORMAT ?= obielf64
 OBIELF_PROFILE ?= debug
 OBIELF_TARGET_DIR ?= target
-OBIELF_CARGO_TARGET_DIR ?= $(BUILD_DIR)/cargo-obielf
-OBIELF_RUN = cargo run --quiet --manifest-path "$(OBIELF_MANIFEST)" --target-dir "$(OBIELF_CARGO_TARGET_DIR)" --bin obielf --
+OBIELF_RUN = cargo run --quiet --
 GO ?= go
 
 VERIFY_OBIELF =
@@ -80,24 +77,20 @@ boot-direct:
 boot-run-direct:
 	$(MAKE) -C $(BOOT_DIR) run-direct OBIELF=$(OBIELF)
 
-# Build and package the local OBIELF toolchain view of MMUKO artifacts.
+# Build and package the MMUKO Cargo view of OBIELF artifacts.
 obielf-build:
-	$(MKDIR_BUILD)
-	cargo build --manifest-path "$(OBIELF_MANIFEST)" --target-dir "$(OBIELF_CARGO_TARGET_DIR)"
+	cargo build
 
 obielf-install:
-	cargo install --path "$(OBIELF_DIR)"
+	cargo install obielf
 
 obielf-formats:
-	$(MKDIR_BUILD)
 	$(OBIELF_RUN) formats
 
 obielf-package-img: img
-	$(MKDIR_BUILD)
 	$(OBIELF_RUN) package --format $(OBIELF_FORMAT) --kind executable --name mmuko-os --profile $(OBIELF_PROFILE) --target-dir "$(OBIELF_TARGET_DIR)" "$(IMG_PATH)"
 
 obielf-package-boot: boot-direct
-	$(MKDIR_BUILD)
 	$(OBIELF_RUN) package --format $(OBIELF_FORMAT) --kind executable --name mmuko-boot --profile $(OBIELF_PROFILE) --target-dir "$(OBIELF_TARGET_DIR)" "$(BOOT_DIRECT_IMAGE)"
 
 obielf-preview: obielf-formats obielf-package-img
@@ -155,8 +148,8 @@ help:
 	@echo "  boot-run-direct - Build and run direct image in QEMU"
 	@echo "  verify  - Verify boot image integrity"
 	@echo "  verify OBIELF=1 - Verify and package the boot image through local OBIELF"
-	@echo "  obielf-build - Build the sibling ../../obielf Cargo crate"
-	@echo "  obielf-install - cargo install --path ../../obielf"
+	@echo "  obielf-build - Build this Cargo package with dependency obielf"
+	@echo "  obielf-install - cargo install obielf"
 	@echo "  obielf-preview - Show OBIELF formats and package img/mmuko-os.img"
 	@echo "  obielf-package-boot - Package boot/build/mmuko-direct.img"
 	@echo "  examples - Build/check trident-boot and lt-fileformat examples"

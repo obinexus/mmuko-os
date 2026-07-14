@@ -63,8 +63,12 @@ container after trident verification.
 ## OBIELF Handoff
 
 The examples are not native OBIELF binaries yet. The current integration path is
-to build or generate an artifact first, then package it through the local OBIELF
-crate:
+to build or generate an artifact first, then package it through the MMUKO-OS
+Cargo project, which depends on `obielf` from crates.io:
+
+```bash
+cargo add obielf
+```
 
 ```bash
 make obielf-preview

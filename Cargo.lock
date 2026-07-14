@@ -5,3 +5,12 @@ version = 4
 [[package]]
 name = "mmuko-os"
 version = "0.1.0"
+dependencies = [
+ "obielf",
+]
+
+[[package]]
+name = "obielf"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c918627a2c7c4dde1e1ab9ba10c9ea16ea2618bd0ac6d813b75055353b4ab6be"
